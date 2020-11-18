@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "e-commerce-c21c9": {
+      "hosting": {
+        "app": [
+          "e-commerce-c21c9"
+        ]
+      }
+    }
+  }
+}
