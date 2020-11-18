@@ -8,15 +8,19 @@
 </ion-header>
 
 <ion-content padding='true'>
-  <form [formGroup]="contactForm">
+  <ion-item>
+    <img src="https://images.unsplash.com/photo-1526178613552-2b45c6c302f0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+                            class="card-img-top" alt="...">
+  </ion-item>
+  <form >
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" formControlName="email" required></ion-input>
+      <ion-input type="email" required></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" formControlName="password" required></ion-input>
+      <ion-input type="password" required></ion-input>
     </ion-item>
 
     <ion-item>

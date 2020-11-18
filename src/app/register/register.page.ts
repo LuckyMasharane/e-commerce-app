@@ -10,24 +10,24 @@ import { User } from '../user';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  public contactForm: FormGroup;
-  user:User
+  // public contactForm: FormGroup;
+  // user:User
   constructor(private _formBuilder: FormBuilder,private authent: AthenticationService, private router: Router) { }
 
   ngOnInit() {
-    this.contactForm = this._formBuilder.group({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: ""
-    });
+    // this.contactForm = this._formBuilder.group({
+    //   firstName: "",
+    //   lastName: "",
+    //   email: "",
+    //   password: ""
+    // });
   }
 
-  signUp(){
-    this.authent.signUpUser(this.contactForm.value);
-    this.authent.getCurrentUser()
-    this.router.navigate(['/home']);
-  }
+  // signUp(){
+  //   this.authent.signUpUser(this.contactForm.value);
+  //   this.authent.getCurrentUser()
+  //   this.router.navigate(['/product']);
+  // }
 
 
 }

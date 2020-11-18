@@ -29,7 +29,7 @@ export class AthenticationService {
       if (results) {
         message = "successfully registered";
 
-        firebase.database().ref('users/' + results.user.uid).set({
+        firebase.database().ref('customers/' + results.user.uid).set({
 
           firstName: user.firstName,
           email: user.email,

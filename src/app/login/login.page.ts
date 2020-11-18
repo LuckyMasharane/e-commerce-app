@@ -10,26 +10,26 @@ import { AthenticationService } from '../athentication.service'
 })
 export class LoginPage implements OnInit {
 
-  public contactForm: FormGroup;
-  email
-  password
-  loggonInUser
+  // public contactForm: FormGroup;
+  // email
+  // password
+  // loggonInUser
 
   constructor(private _formBuilder: FormBuilder,private authent: AthenticationService, private router: Router) { 
-    this.contactForm = this._formBuilder.group({
-      email: "",
-      password: ""
-    });
+    // this.contactForm = this._formBuilder.group({
+    //   email: "",
+    //   password: ""
+    // });
   }
 
   ngOnInit() {
-    this.authent.getCurrentUser();
+    // this.authent.getCurrentUser();
   }
-  login(){
-    console.log(this.contactForm.value.email);
-    this.authent.signInUser(this.contactForm.value.email, this.contactForm.value.password)
-    this.loggonInUser = this.authent.userInfo
-    this.router.navigate(['/home']);
-  }
+  // login(){
+  //   console.log(this.contactForm.value.email);
+  //   this.authent.signInUser(this.contactForm.value.email, this.contactForm.value.password)
+  //   this.loggonInUser = this.authent.userInfo
+  //   this.router.navigate(['/product']);
+  // }
 
 }
