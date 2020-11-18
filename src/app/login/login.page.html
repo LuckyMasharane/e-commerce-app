@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding='true'>
+  <form>
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-checkbox checked="true"></ion-checkbox>
+      <ion-label> Always signed in?</ion-label>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button [routerLink]="['/product']" type="submit" color="success" expand="block">Sign In</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button [routerLink]="['/resetpassword']" type="submit" color="primary" expand="block">Reset Password</ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>
