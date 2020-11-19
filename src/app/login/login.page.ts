@@ -10,29 +10,6 @@ import { AthenticationService } from '../athentication.service'
 })
 export class LoginPage implements OnInit {
 
-  // public contactForm: FormGroup;
-  // email
-  // password
-  // loggonInUser
-
- // constructor(private _formBuilder: FormBuilder,private authent: AthenticationService, private router: Router) { 
-    // this.contactForm = this._formBuilder.group({
-    //   email: "",
-    //   password: ""
-    // });
-  // }
-
-  // ngOnInit() {
-  //   // this.authent.getCurrentUser();
-  // }
-  // login(){
-  //   console.log(this.contactForm.value.email);
-  //   this.authent.signInUser(this.contactForm.value.email, this.contactForm.value.password)
-  //   this.loggonInUser = this.authent.userInfo
-  //   this.router.navigate(['/product']);
-  // }
-
-
   validations_form: FormGroup;
   errorMessage: string = '';
 
@@ -65,30 +42,24 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    // this.validations_form = this.formBuilder.group({
-    //   email: new FormControl('', Validators.compose([
-    //     Validators.required,
-    //     Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-    //   ])),
-    //   password: new FormControl('', Validators.compose([
-    //     Validators.minLength(5),
-    //     Validators.required
-    //   ])),
-    // });
+
   }
 
   tryLogin(){
-    this.authService.signInUser(this.validations_form.value.email,this.validations_form.value.password)
-    // .then(res => {
-    //   this.router.navigate(["/products"]);
-    // }, err => {
-    //   this.errorMessage = err.message;
-    //   console.log(err)
-    // })
+    this.authService.SignIn(this.validations_form.value.email,this.validations_form.value.password)
+    .then(res => {
+      this.router.navigate(["/product"]);
+    }, err => {
+      this.errorMessage = err.message;
+      console.log(err)
+    })
   }
 
   goRegisterPage(){
     this.router.navigate(["/register"]);
+  }
+  goResetPage(){
+    this.router.navigate(["/resetpassword"]);
   }
 
 }

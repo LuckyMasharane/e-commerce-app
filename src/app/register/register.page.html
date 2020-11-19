@@ -13,7 +13,7 @@
       src="https://images.unsplash.com/photo-1603834305747-b0fb6f8bbfd6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80"
       class="card-img-top" alt="...">
   </ion-item>
-  <form class="form" [formGroup]="validations_form" (ngSubmit)="tryRegister(validations_form.value)">
+  <form class="form" [formGroup]="validations_form" >
     <ion-item>
       <ion-label position="floating" color="primary">First Name</ion-label>
       <ion-input type="text" formControlName="firstName"></ion-input>
@@ -48,7 +48,7 @@
       </ng-container>
     </div>
 
-    <ion-button class="submit-btn" color="danger" expand="block" type="submit" [disabled]="!validations_form.valid">Register
+    <ion-button class="submit-btn" color="danger"  (click)="tryRegister()"expand="block" type="submit" [disabled]="!validations_form.valid">Register
     </ion-button>
     <label class="error-message">{{errorMessage}}</label>
     <label class="success-message">{{successMessage}}</label>

@@ -1,106 +1,57 @@
-import { Injectable } from '@angular/core';
-import firebase from 'firebase';
+import { Injectable, NgZone } from '@angular/core';
+import * as firebase from 'firebase';
+import { AngularFireAuth } from "@angular/fire/auth";
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { User } from './user';
+import { Router } from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AthenticationService {
 
-  afAuth: any;
+  userData: any;
 
-  user: User;
-  userInfo;
-  constructor() { }
-
-  signUpUser(user) {
-    let message = "";
-
-    firebase.auth().createUserWithEmailAndPassword(user.email, user.password).catch((error) => {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      message = errorMessage;
-      console.log(errorMessage);
-    }).then(results => {
-      console.log(results);
-      console.log(user);
-
-      if (results) {
-        message = "successfully registered";
-
-        firebase.database().ref('customers/' + results.user.uid).set({
-
-          firstName: user.firstName,
-          email: user.email,
-          lastName: user.lastName,
-          password: user.password
-        });
-        console.log(message);
-
-      } else {
-
-      }
-
-    });
-  }
-
-  signInUser(email, password) {
-    let user: any;
-    let message: "";
-
-    firebase.auth().signInWithEmailAndPassword(email, password).catch((error) => {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      message = errorMessage
-      console.log(message);
-      // ...
-    }).then(result => {
-      user = result;
-
+  constructor(
+    public afStore: AngularFirestore,
+    public ngFireAuth: AngularFireAuth,
+    public router: Router,  
+    public ngZone: NgZone 
+  ) {
+    this.ngFireAuth.authState.subscribe(user => {
       if (user) {
-        console.log(user.user.email + " Successfully logged in");
+        this.userData = user;
+        localStorage.setItem('user', JSON.stringify(this.userData));
+        JSON.parse(localStorage.getItem('user'));
       } else {
-        console.log(message)
+        localStorage.setItem('user', null);
+        JSON.parse(localStorage.getItem('user'));
       }
-      return user.user.email;
-    });
+    })
   }
 
-  resetPassword(email: string) {
-    const fbAuth = firebase.auth();
-
-    return fbAuth.sendPasswordResetEmail(email)
-      .then(() => console.log('sent Password Reset Email!'))
-      .catch((error) => console.log(error))
+  // Login in with email/password
+  SignIn(email, password) {
+    return firebase.default.auth().signInWithEmailAndPassword(email, password)
   }
 
-  getCurrentUser() {
-
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        var userId = user.uid;
-        firebase.database().ref('/users/' + userId).once('value').then(userProfile => {
-          this.userInfo = new User(userProfile.val().firstName, userProfile.val().lastName, userProfile.val().email)
-          console.log(this.userInfo);
-          // return userInfo
-        })
-      } else {
-        console.log("user not logged in");
-
-      }
-    });
+  // Register user with email/password
+  RegisterUser(email, password) {
+    return firebase.default.auth().createUserWithEmailAndPassword(email, password)
   }
 
-    logout() {
-      firebase.auth().signOut().then(() => {
-        // Sign-out successful.
-        console.log("Sign-out successful.");
-  
-      }).catch(function (error) {
-        console.log(error);
-  
-      });
-    }
+  PasswordRecover(passwordResetEmail) {
+    return firebase.default.auth().sendPasswordResetEmail(passwordResetEmail)
+    .then(() => {
+      window.alert('Password reset email has been sent, please check your inbox.');
+    }).catch((error) => {
+      window.alert(error)
+    })
+  }
+  SignOut() {
+    return firebase.default.auth().signOut().then(() => {
+      localStorage.removeItem('user');
+      this.router.navigate(['login']);
+    })
+  }
 }

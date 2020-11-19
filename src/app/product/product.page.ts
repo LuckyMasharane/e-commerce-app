@@ -18,7 +18,6 @@ export class ProductPage implements OnInit {
   }
 
   getproductLists() {
-   
     return this.prod.getAllProduct().subscribe(res => {
       this.prod_List = res.map(product => {
         return {
