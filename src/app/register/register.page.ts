@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AthenticationService } from '../athentication.service';
 import { User } from '../user';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-register',
@@ -50,8 +51,25 @@ export class RegisterPage implements OnInit {
   }
 
   tryRegister() {
+    let message = ""
     this.authService.RegisterUser(this.validations_form.value.email, this.validations_form.value.password)
       .then(res => {
+
+        if (res) {
+          message = "successfully registered";
+      
+          firebase.default.database().ref('costumers/' + res.user.uid).set({
+      
+            firstName: this.validations_form.value.firstName,
+            email: this.validations_form.value.email,
+            lastName: this.validations_form.value.lastName,
+            password: this.validations_form.value.password
+          });
+          console.log(message);
+      
+        } else {
+      
+        }
         this.router.navigate(["/product"]);
       }, err => {
         this.errorMessage = err.message;
@@ -62,6 +80,8 @@ export class RegisterPage implements OnInit {
   goLoginPage() {
     this.router.navigate(["/login"]);
   }
+
+  
 
 
 

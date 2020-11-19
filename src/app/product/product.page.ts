@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from '../product';
 import { ProductService } from '../product.service';
 
+
 @Component({
   selector: 'app-product',
   templateUrl: './product.page.html',
@@ -11,7 +12,7 @@ export class ProductPage implements OnInit {
 
   prod_List: Product[] = []
 
-  constructor(private prod: ProductService,) { }
+  constructor(private prod: ProductService) { }
 
   ngOnInit() {
     this.getproductLists();

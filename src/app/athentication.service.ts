@@ -40,6 +40,20 @@ export class AthenticationService {
     return firebase.default.auth().createUserWithEmailAndPassword(email, password)
   }
 
+  SetUserData(user) {
+    const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`users/${user.uid}`);
+    const userData: User = {
+
+      email: user.email,
+      firstName: user.firstName,
+      password: user.password,
+      lastName: user.lastName
+    }
+    return userRef.set(userData, {
+      merge: true
+    })
+  }
+
   PasswordRecover(passwordResetEmail) {
     return firebase.default.auth().sendPasswordResetEmail(passwordResetEmail)
     .then(() => {
