@@ -7,7 +7,7 @@
 <ion-content>
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor="let product of prod_List " size="6">
+      <ion-col *ngFor="let product of prod_List ">
         <ion-card>
           <ion-card-header>
             <img src={{product.picture}}>
@@ -24,6 +24,7 @@
               <ion-label>R {{product.price}}</ion-label>
             </ion-item>
           </ion-card-content>
+          <ion-button color="warning" (click)="shoppingCart()"style="float: right;">Add to Cart<ion-icon name="cart-outline"></ion-icon></ion-button>
         </ion-card>
       </ion-col>
     </ion-row>

@@ -4,7 +4,7 @@ import { LoginPage } from './login/login.page';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
@@ -20,12 +20,16 @@ const routes: Routes = [
     loadChildren: () => import('./resetpassword/resetpassword.module').then( m => m.ResetpasswordPageModule)
   },
   {
-    path: '',
+    path: 'we',
     loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule)
   },
   {
     path: 'product',
     loadChildren: () => import('./product/product.module').then( m => m.ProductPageModule)
+  },
+  {
+    path: 'shop-cart',
+    loadChildren: () => import('./shop-cart/shop-cart.module').then( m => m.ShopCartPageModule)
   }
 ];
 @NgModule({
