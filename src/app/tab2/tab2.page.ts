@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-tab2',
@@ -7,6 +9,20 @@ import { Component } from '@angular/core';
 })
 export class Tab2Page {
 
-  constructor() {}
+  product
+  constructor(private prod: ProductService, private router: Router) {
+    this.router.getCurrentNavigation().extras.state
+    this.product = history.state
+  }
 
+  addToCart(product) {
+    console.log("add");
+    
+    this.prod.addProduct(product);
+    
+  }
+
+  count(){
+    this.prod.getCartItemCount()
+  }
 }

@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore'
+import { BehaviorSubject } from 'rxjs';
+// import { Storage } from '@ionic/storage'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+
+  cart = []
+  private cartItemCount = new BehaviorSubject(0);
 
   constructor(private db: AngularFirestore) { }
 
@@ -58,9 +63,61 @@ export class ProductService {
   // firebase
 
   getAllProduct() {
-    return this.db.collection("product").snapshotChanges()  
+    return this.db.collection("product").snapshotChanges()
   }
 
+  getCartItemCount() {
+    return this.cartItemCount;
+  }
+
+
+  // addToCart(uid: string, item: any): void {
+  //   let obj = this.db.collection(`/product/${uid}/${item.name}`);
+  //   obj.ref.onSnapshot(val => {
+  //     if (val == null) {
+  //       return {
+  //         name: item.name, 
+  //         price: item.price, 
+  //         description: item.description, 
+  //         count: 1
+  //       };
+  //     }
+  //     else {
+  //       return { 
+  //         name: item.name, 
+  //         price: item.price, 
+  //         description: item.description, 
+  //         //count: val.count + 1 
+  //       };
+  //     }
+  //   });
+  // };
+
+  addProduct(product) {
+    let added = false;
+    for (let p of this.cart) {
+      if (p.id === product.id) {
+        p.price += 1;
+        added = true;
+        break;
+      }
+    }
+    if (!added) {
+      product.price = 1;
+      this.cart.push(product);
+    }
+    this.cartItemCount.next(this.cartItemCount.value + 1);
+  }
+  // getUid(): Promise<string> {
+  //   return this.storage.get('UID').then((value) => {
+  //     return value;
+  //   });
+  // };
+  // getItemsFromCart(): any {
+  //   this.getUid().then(uid => {
+  //     return this.db.collection('/product' + '/' + uid);
+  //   });
+  // };
   // firebase
 
   // addProduct(prod: Product) {
@@ -80,12 +137,12 @@ export class ProductService {
   //       console.error("Error writing document: ", error);
   //     });
   // }
-  
+
 
   // firebase
 
   // updateProduct(prod:Product){
-    
+
   //   this.db.doc('product/' + prod).update(prod);
 
   // }

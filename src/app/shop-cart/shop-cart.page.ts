@@ -19,7 +19,11 @@ export class ShopCartPage implements OnInit {
 
   ngOnInit() {
   }
-
+  // addToCart(product) {
+  //   this.prod.addProduct(product);
+    
+  // }
+  
   // ViewProduct(product){
   //   this.router.navigateByUrl('/more-info/update', { state: product});
   // }
