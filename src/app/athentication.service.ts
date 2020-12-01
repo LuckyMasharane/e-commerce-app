@@ -11,6 +11,7 @@ import { Router } from "@angular/router";
 export class AthenticationService {
 
   userData: any;
+  userInfo: any
 
   constructor(
     public afStore: AngularFirestore,
@@ -30,15 +31,32 @@ export class AthenticationService {
     })
   }
 
-  // Login in with email/password
+
   SignIn(email, password) {
     return firebase.default.auth().signInWithEmailAndPassword(email, password)
   }
 
-  // Register user with email/password
+
   RegisterUser(email, password) {
     return firebase.default.auth().createUserWithEmailAndPassword(email, password)
   }
+
+  getCurrentUser() {
+    firebase.default.auth().onAuthStateChanged((user) => {
+      if (user) {
+        var userId = user.uid;
+        firebase.default.database().ref('/consumers/' + userId).once('value').then(userProfile => {
+          this.userInfo = new User(userProfile.val().firstName, userProfile.val().lastName, userProfile.val().email)
+          console.log("userInfo===" , this.userInfo.email);
+           return this.userInfo
+        })
+      } else {
+        console.log("user not logged in");
+
+      }
+    });
+  }
+
 
   SetUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`users/${user.uid}`);

@@ -15,7 +15,7 @@
   </div>
 
   <ion-list >
-    <ion-item  *ngFor="let product of prod_List ">
+    <ion-item  *ngFor="let product of cartList ">
       <ion-card>
         <ion-card-header>
           <img src={{product.picture}} class="card-img-top" alt="...">
@@ -35,8 +35,8 @@
             <ion-icon name="wallet-outline"></ion-icon>
             <ion-label>{{product.price}}</ion-label>
           </ion-item>
-          <ion-button color="warning"  style="float: right;">add to cart <ion-icon name="cart-outline"></ion-icon>
-          </ion-button>
+          <!-- <ion-button color="warning" (click)="addToCart(product)" style="float: right;">add to cart <ion-icon name="cart-outline"></ion-icon>
+          </ion-button> -->
           
         </ion-card-content>
       </ion-card>
