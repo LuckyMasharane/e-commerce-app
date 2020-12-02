@@ -14,11 +14,9 @@ export class SalesService {
 
 
   getAllCart() {
-
     this.db.collection('carts', ref => ref.where('userID', '==', this.userID) ).valueChanges().subscribe(val =>{
       console.log(val);
-      return val
-      
+      return val 
     })
   }
 
