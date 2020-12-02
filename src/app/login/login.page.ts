@@ -12,6 +12,7 @@ export class LoginPage implements OnInit {
 
   validations_form: FormGroup;
   errorMessage: string = '';
+  loggonInUser
 
   validation_messages = {
    'email': [
@@ -42,13 +43,14 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-
+    this.authService.getCurrentUser()
   }
 
   tryLogin(){
     this.authService.SignIn(this.validations_form.value.email,this.validations_form.value.password)
     .then(res => {
       this.router.navigate(["/tabs"]);
+      this.loggonInUser = this.authService.userInfo
     }, err => {
       this.errorMessage = err.message;
       console.log(err)

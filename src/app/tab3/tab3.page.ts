@@ -12,7 +12,9 @@ export class Tab3Page implements OnInit{
   userProfile
 
   constructor(private authenService: AthenticationService,public router: Router) {}
-  ngOnInit(){
+
+  ngOnInit(): void {
+    this.authenService.getCurrentUser()
     this.userProfile = this.authenService.userInfo;
 
     console.log(this.userProfile);
@@ -20,6 +22,7 @@ export class Tab3Page implements OnInit{
   }
 
   logout(){
+    console.log("successfully logout");
     this.authenService.SignOut();
     this.router.navigate(['/we']);
   }

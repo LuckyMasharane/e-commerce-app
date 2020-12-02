@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProductService } from '../product.service';
 import { SalesService } from '../sales.service';
-import { AthenticationService } from '../athentication.service';
-
 
 @Component({
   selector: 'app-shop-cart',
@@ -13,22 +10,35 @@ import { AthenticationService } from '../athentication.service';
 export class ShopCartPage implements OnInit {
 
   product
-  userId
+  // userId
+  cart:any;
 
-  constructor(private prod: ProductService, private auth:AthenticationService, private router: Router, private salesService: SalesService) { 
+  constructor( private router: Router, private salesService: SalesService) { 
     this.router.getCurrentNavigation().extras.state
     this.product = history.state
   }
 
   ngOnInit() {
-    this.userId = this.auth.getCurrentUser()
-    console.log(this.userId);
-    
+
   }
 
- addToCart(){
-   this.salesService.addToCart(this.userId ,this.product)
- }
+//  addToCart(){
+//    this.salesService.addToCart(this.product)
+//  }
+
+ addToCart(product) {
+  // console.log(product);
+  let userId = localStorage.getItem('userID')
+  this.cart = {
+    userID: userId,
+    quantity: 1,
+    product
+  }
+  console.log(this.cart);
+
+  this.salesService.addToCart(this.cart)
+
+}
   
   ViewProduct(product){
     this.router.navigateByUrl('/more-info/update', { state: product});

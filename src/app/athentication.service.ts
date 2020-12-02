@@ -11,7 +11,7 @@ import { Router } from "@angular/router";
 export class AthenticationService {
 
   userData: any;
-  userInfo: any
+  userInfo: User;
 
   constructor(
     public afStore: AngularFirestore,
@@ -19,26 +19,61 @@ export class AthenticationService {
     public router: Router,  
     public ngZone: NgZone 
   ) {
-    this.ngFireAuth.authState.subscribe(user => {
-      if (user) {
-        this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
-        JSON.parse(localStorage.getItem('user'));
-      } else {
-        localStorage.setItem('user', null);
-        JSON.parse(localStorage.getItem('user'));
-      }
-    })
+   
   }
 
 
   SignIn(email, password) {
-    return firebase.default.auth().signInWithEmailAndPassword(email, password)
+    let user:any;
+    let message ="";
+    return firebase.default.auth().signInWithEmailAndPassword(email, password).then(result =>{
+      user = result
+      console.log(result);
+
+      if(user){
+        
+        message = user.user.email + " has successfully logged in"
+        localStorage.setItem('userID', user.user.uid);
+        console.log(localStorage.getItem('userID'));
+        console.log(message);
+      }else{
+        console.log(message);
+      }
+      
+      return user.user.email
+    });
   }
 
 
-  RegisterUser(email, password) {
-    return firebase.default.auth().createUserWithEmailAndPassword(email, password)
+  RegisterUser(user) {
+    // let user:any;
+    let message="";
+    return firebase.default.auth().createUserWithEmailAndPassword(user.email, user.password)
+    .then(res => {
+
+      if (res) {
+        console.log(res);
+        message = "successfully registered";
+        localStorage.setItem('userID', res.user.uid);
+        console.log(localStorage.getItem('userID'));
+        console.log(message);
+        firebase.default.database().ref('costumers/' + res.user.uid).set({
+    
+          firstName: user.firstName,
+          email: user.email,
+          lastName: user.lastName,
+          password: user.password
+        });
+        console.log(message);
+    
+      } else {
+    
+      }
+      
+    }, err => {
+      message = err.message;
+      console.log(message)
+    })
   }
 
   getCurrentUser() {
@@ -47,7 +82,7 @@ export class AthenticationService {
         var userId = user.uid;
         firebase.default.database().ref('/consumers/' + userId).once('value').then(userProfile => {
           this.userInfo = new User(userProfile.val().firstName, userProfile.val().lastName, userProfile.val().email)
-          console.log("userInfo===" , this.userInfo.email);
+          console.log("userInfo ===" , this.userInfo.email);
            return this.userInfo
         })
       } else {
@@ -82,7 +117,7 @@ export class AthenticationService {
   }
   SignOut() {
     return firebase.default.auth().signOut().then(() => {
-      localStorage.removeItem('user');
+      localStorage.removeItem('userID');
       this.router.navigate(['login']);
     })
   }

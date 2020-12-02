@@ -9,24 +9,26 @@ export class SalesService {
    
   uid: any;
   cartItem: any;
-
+  userID = localStorage.getItem('userID');
   constructor(private db: AngularFirestore ) { }
 
 
   getAllCart() {
-    this.cartItem = this.db.collection("carts").snapshotChanges();
-    return this.cartItem;
+
+    this.db.collection('carts', ref => ref.where('userID', '==', this.userID) ).valueChanges().subscribe(val =>{
+      console.log(val);
+      return val
+      
+    })
   }
 
-  addToCart(uid: string, item: any){
-    this.db.collection(`/carts/`).doc(`${uid}`).set({
-      name: item.name, 
-      price: item.price,
-      description:item.description,
-      picture: item.picture, 
-      count: 1
-    });
-  
+  addToCart(product){
+    this.db.collection("carts").add(product).then(results => {
+      console.log("added");
+    }
+    ).catch(err => {
+      console.log(err);
+    })
   };
 
 }
