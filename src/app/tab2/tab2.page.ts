@@ -10,14 +10,14 @@ import { SalesService } from '../sales.service';
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss']
 })
+
 export class Tab2Page implements OnInit {
-
-
   cart: any
   product
   uid
-  cartList:any
-  constructor(private prod: ProductService, private saleService : SalesService , private router: Router, private db: AngularFirestore) {
+  total
+
+  constructor( private saleService : SalesService , private router: Router) {
     this.router.getCurrentNavigation().extras.state
     this.product = history.state
   }
@@ -25,15 +25,15 @@ export class Tab2Page implements OnInit {
     this.getAddedCart();
   }
   
-
   getAddedCart(){
-    this.cartList = this.saleService.getAllCart()
-    console.log(this.cartList);
+    this.cart = this.saleService.getAllCart()
+    console.log("added product from firebas == ",this.cart);
     
   }
 
   getTotal(){
-    return this.cart.reduce((i,j)=> i + j.price * j.amout,0)
+    this.total = this.cart.reduce((i,j)=> i + j.price * j.quantity,0)
+    return this.total;
   }
   checkout(){
     this.router.navigate(['/checkout'])

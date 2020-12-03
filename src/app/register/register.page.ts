@@ -15,6 +15,7 @@ export class RegisterPage implements OnInit {
   validations_form: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
+  currentUser
 
   validation_messages = {
     'email': [
@@ -53,6 +54,7 @@ export class RegisterPage implements OnInit {
   tryRegister() {
     this.authService.RegisterUser(this.validations_form.value)
     this.router.navigate(["/tabs"]);
+    this.authService.getCurrentUser();
   }
 
   goLoginPage() {

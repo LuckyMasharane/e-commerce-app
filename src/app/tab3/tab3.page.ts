@@ -14,10 +14,10 @@ export class Tab3Page implements OnInit{
   constructor(private authenService: AthenticationService,public router: Router) {}
 
   ngOnInit(): void {
-    this.authenService.getCurrentUser()
+    // this.authenService.getCurrentUser()
     this.userProfile = this.authenService.userInfo;
 
-    console.log(this.userProfile);
+    console.log("User === ",this.userProfile);
     
   }
 

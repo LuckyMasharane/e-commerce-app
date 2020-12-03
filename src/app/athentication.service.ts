@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import { AngularFireAuth } from "@angular/fire/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { User } from './user';
@@ -13,33 +13,24 @@ export class AthenticationService {
   userData: any;
   userInfo: User;
 
-  constructor(
-    public afStore: AngularFirestore,
-    public ngFireAuth: AngularFireAuth,
-    public router: Router,  
-    public ngZone: NgZone 
-  ) {
-   
-  }
-
+  constructor(public afStore: AngularFirestore, public ngFireAuth: AngularFireAuth, public router: Router, public ngZone: NgZone) { }
 
   SignIn(email, password) {
-    let user:any;
-    let message ="";
-    return firebase.default.auth().signInWithEmailAndPassword(email, password).then(result =>{
+    let user: any;
+    let message = "";
+    return firebase.auth().signInWithEmailAndPassword(email, password).then(result => {
       user = result
       console.log(result);
 
-      if(user){
-        
+      if (user) {
+
         message = user.user.email + " has successfully logged in"
         localStorage.setItem('userID', user.user.uid);
         console.log(localStorage.getItem('userID'));
         console.log(message);
-      }else{
+      } else {
         console.log(message);
       }
-      
       return user.user.email
     });
   }
@@ -47,49 +38,51 @@ export class AthenticationService {
 
   RegisterUser(user) {
     // let user:any;
-    let message="";
-    return firebase.default.auth().createUserWithEmailAndPassword(user.email, user.password)
-    .then(res => {
+    let message = "";
+    return firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+      .then(res => {
 
-      if (res) {
-        console.log(res);
-        message = "successfully registered";
-        localStorage.setItem('userID', res.user.uid);
-        console.log(localStorage.getItem('userID'));
-        console.log(message);
-        firebase.default.database().ref('costumers/' + res.user.uid).set({
-    
-          firstName: user.firstName,
-          email: user.email,
-          lastName: user.lastName,
-          password: user.password
-        });
-        console.log(message);
-    
-      } else {
-    
-      }
-      
-    }, err => {
-      message = err.message;
-      console.log(message)
-    })
+        if (res) {
+          console.log(res);
+          message = "successfully registered";
+          localStorage.setItem('userID', res.user.uid);
+          console.log(localStorage.getItem('userID'));
+          console.log(message);
+          firebase.database().ref('costumers/' + res.user.uid).set({
+
+            firstName: user.firstName,
+            email: user.email,
+            lastName: user.lastName,
+            password: user.password
+          });
+          console.log(message);
+
+        } else {
+
+        }
+
+      }, err => {
+        message = err.message;
+        console.log(message)
+      })
   }
 
   getCurrentUser() {
-    firebase.default.auth().onAuthStateChanged((user) => {
+
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         var userId = user.uid;
-        firebase.default.database().ref('/consumers/' + userId).once('value').then(userProfile => {
+        firebase.database().ref('/customers/' + userId).once('value').then(userProfile => {
           this.userInfo = new User(userProfile.val().firstName, userProfile.val().lastName, userProfile.val().email)
-          console.log("userInfo ===" , this.userInfo.email);
-           return this.userInfo
+          console.log(this.userInfo);
+          // return userInfo
         })
       } else {
         console.log("user not logged in");
 
       }
     });
+
   }
 
 
@@ -108,17 +101,17 @@ export class AthenticationService {
   }
 
   PasswordRecover(passwordResetEmail) {
-    return firebase.default.auth().sendPasswordResetEmail(passwordResetEmail)
-    .then(() => {
-      window.alert('Password reset email has been sent, please check your inbox.');
-    }).catch((error) => {
-      window.alert(error)
-    })
+    return firebase.auth().sendPasswordResetEmail(passwordResetEmail)
+      .then(() => {
+        window.alert('Password reset email has been sent, please check your inbox.');
+      }).catch((error) => {
+        window.alert(error)
+      })
   }
   SignOut() {
-    return firebase.default.auth().signOut().then(() => {
+    return firebase.auth().signOut().then(() => {
       localStorage.removeItem('userID');
-      this.router.navigate(['login']);
+
     })
   }
 }
