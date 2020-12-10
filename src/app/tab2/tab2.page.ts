@@ -18,16 +18,16 @@ export class Tab2Page implements OnInit {
   total
 
   constructor( private saleService : SalesService , private router: Router) {
-    this.router.getCurrentNavigation().extras.state
-    this.product = history.state
+    // this.router.getCurrentNavigation().extras.state
+    // this.product = history.state
   }
   ngOnInit() { 
     this.getAddedCart();
   }
   
   getAddedCart(){
-    this.cart = this.saleService.getAllCart()
-    console.log("added product from firebas == ",this.cart);
+    this.cart = this.saleService.getAllCart();
+    console.log("added product from firebase == " + this.cart);
     
   }
 

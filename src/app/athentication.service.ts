@@ -13,7 +13,18 @@ export class AthenticationService {
   userData: any;
   userInfo: User;
 
-  constructor(public afStore: AngularFirestore, public ngFireAuth: AngularFireAuth, public router: Router, public ngZone: NgZone) { }
+  constructor(public afStore: AngularFirestore, public ngFireAuth: AngularFireAuth, public router: Router, public ngZone: NgZone) {
+    // this.ngFireAuth.authState.subscribe(user => {
+    //   if (user) {
+    //     this.userData = user;
+    //     localStorage.setItem('userID', JSON.stringify(this.userData));
+    //     JSON.parse(localStorage.getItem('userID'));
+    //   } else {
+    //     localStorage.setItem('userID', null);
+    //     JSON.parse(localStorage.getItem('userID'));
+    //   }
+    // })
+   }
 
   SignIn(email, password) {
     let user: any;
@@ -68,37 +79,38 @@ export class AthenticationService {
   }
 
   getCurrentUser() {
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         var userId = user.uid;
         firebase.database().ref('/customers/' + userId).once('value').then(userProfile => {
-          this.userInfo = new User(userProfile.val().firstName, userProfile.val().lastName, userProfile.val().email)
+          this.userInfo = new User(userProfile.val().firstName, userProfile.val().lastName, userProfile.val().email,userProfile.val().paswword)
           console.log(this.userInfo);
           // return userInfo
         })
       } else {
         console.log("user not logged in");
-
       }
     });
 
   }
 
+  // isLoggedIn(): boolean {
+  //   const user = JSON.parse(localStorage.getItem('userID'));
+  //   return (user !== null) ? true : false;
+  // }
 
-  SetUserData(user) {
-    const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`users/${user.uid}`);
-    const userData: User = {
+  // SetUserData(user) {
+  //   const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`costumers/${user.uid}`);
+  //   const userData: User = {
 
-      email: user.email,
-      firstName: user.firstName,
-      password: user.password,
-      lastName: user.lastName
-    }
-    return userRef.set(userData, {
-      merge: true
-    })
-  }
+  //     email: user.email,
+  //     firstName: user.firstName,
+  //     lastName: user.lastName
+  //   }
+  //   return userRef.set(userData, {
+  //     merge: true
+  //   })
+  // }
 
   PasswordRecover(passwordResetEmail) {
     return firebase.auth().sendPasswordResetEmail(passwordResetEmail)

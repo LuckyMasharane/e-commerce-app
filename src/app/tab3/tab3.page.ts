@@ -10,6 +10,7 @@ import { AthenticationService } from '../athentication.service';
 export class Tab3Page implements OnInit{
 
   userProfile
+  user
 
   constructor(private authenService: AthenticationService,public router: Router) {}
 
