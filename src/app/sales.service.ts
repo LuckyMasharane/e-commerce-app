@@ -6,17 +6,19 @@ import { AngularFirestore } from '@angular/fire/firestore'
   providedIn: 'root'
 })
 export class SalesService {
-   
-  uid: any;
+ 
   cartItem: any;
+  cartList:{};
   userID = localStorage.getItem('userID');
   constructor(private db: AngularFirestore ) { }
 
 
   getAllCart() {
     this.db.collection('carts', ref => ref.where('userID', '==', this.userID) ).valueChanges().subscribe(val =>{
-      console.log(val);
-      return val 
+      this.cartList = val;
+      localStorage.setItem("carts",JSON.stringify(this.cartList))
+      console.log(this.cartList);
+      // return val 
     })
   }
 

@@ -24,18 +24,28 @@ export class Tab2Page implements OnInit {
   ngOnInit() { 
     this.getAddedCart();
   }
+  ionViewDidEnter(){
+    this.saleService.getAllCart();
+    this.cart = JSON.parse(localStorage.getItem("carts"));
+    console.log(this.cart);
+    this.getAddedCart();
+  }
   
-  getAddedCart(){
-    this.cart = this.saleService.getAllCart();
+  getAddedCart(){ 
     console.log("added product from firebase == " + this.cart);
-    
   }
 
   getTotal(){
     this.total = this.cart.reduce((i,j)=> i + j.price * j.quantity,0)
     return this.total;
   }
+
   checkout(){
     this.router.navigate(['/checkout'])
   }
+
+  // ViewProduct(product){
+  //   this.router.navigateByUrl('/more-info/update', { state: product});
+  // }
+
 }

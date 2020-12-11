@@ -16,27 +16,11 @@
 
   <ion-list>
     <ion-item *ngFor="let product of cart ">
-
-      <ion-card>
-        <ion-card-header>
-          <img src={{product.picture}} class="card-img-top" alt="...">
-        </ion-card-header>
-        <ion-card-content>
-          <ion-item>
-            <ion-icon name="pricetag-outline"></ion-icon>
-            <ion-label>{{product.name}}</ion-label>
-          </ion-item>
-
-          <ion-item>
-            <ion-icon name="document-text-outline"></ion-icon>
-            <ion-label>{{product.description}}</ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-icon name="wallet-outline"></ion-icon>
-            <ion-label>{{product.price}}</ion-label>
-          </ion-item>
-        </ion-card-content>
-      </ion-card>
+      <ion-thumbnail slot="start">
+        <ion-img src={{product.product.picture}}></ion-img>
+      </ion-thumbnail>
+      <ion-label>{{product.product.name}}</ion-label>
+      <ion-label>{{product.product.price}}</ion-label>
     </ion-item>
   </ion-list>
   <ion-row>

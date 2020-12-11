@@ -34,7 +34,7 @@ export class ShopCartPage implements OnInit {
     quantity: 1,
     product
   }
-  console.log(this.cart);
+  // console.log(this.cart);
 
   this.salesService.addToCart(this.cart)
 

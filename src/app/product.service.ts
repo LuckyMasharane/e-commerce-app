@@ -9,10 +9,7 @@ import { BehaviorSubject } from 'rxjs';
 export class ProductService {
 
   cartItem:any
-  cart = []
-
-  private cartItemCount = new BehaviorSubject(0);
-
+  
   constructor(private db: AngularFirestore) { }
 
   getAllProduct() {
